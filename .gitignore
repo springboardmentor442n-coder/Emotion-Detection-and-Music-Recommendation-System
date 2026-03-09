@@ -1,0 +1,12 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+tf_env/
+
+# Dataset
+ml/data/
+
+# System files
+.DS_Store
