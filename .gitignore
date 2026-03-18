@@ -1,0 +1,68 @@
+# ========================
+# Python / Django
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+.env/
+env/
+.venv/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.log
+local_settings.py
+media/
+
+# Environment variables
+.env
+.env.*
+
+# ========================
+# Node / React / Vite
+# ========================
+node_modules/
+frontend/dist/
+.cache/
+*.tsbuildinfo
+
+# ========================
+# ML Models (tracked by Git LFS)
+# ========================
+# These are LFS-tracked, not ignored
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# OS
+# ========================
+*.tmp
+*.temp
+
+# ========================
+# Documentation
+# ========================
+*.md

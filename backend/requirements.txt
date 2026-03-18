@@ -1,0 +1,10 @@
+django
+djangorestframework
+django-cors-headers
+Pillow
+tensorflow
+transformers
+torch
+scikit-learn
+pandas
+numpy

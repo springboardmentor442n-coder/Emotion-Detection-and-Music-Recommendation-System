@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* MoodMate palette — bright & playful */
+  --mm-bg:            #F8F6FF;
+  --mm-surface:       #FFFFFF;
+  --mm-border:        #E0DAF8;
+  --mm-primary:       #7B72E0;
+  --mm-accent-pink:   #FF6B9D;
+  --mm-accent-teal:   #1D9E75;
+  --mm-text:          #1A1A2E;
+  --mm-text-muted:    #5F5E5A;
+  --mm-text-dim:      #B4B2A9;
+
+  /* Motion timing */
+  --dur-fast:     80ms;
+  --dur-default:  200ms;
+  --dur-slow:     400ms;
+  --ease-out:     cubic-bezier(0.0, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--mm-bg);
+  color: var(--mm-text);
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
