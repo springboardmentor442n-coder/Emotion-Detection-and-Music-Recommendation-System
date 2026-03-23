@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pandas
+transformers
+torch
+deepface
+opencv-python-headless
+tf-keras
+tf-keras-vis
+pydantic
+python-multipart
