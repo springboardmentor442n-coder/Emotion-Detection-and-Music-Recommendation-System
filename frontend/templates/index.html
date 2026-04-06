@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMate</title>
+    <!-- Clean, standard font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <!-- NEW -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <link rel="stylesheet" href="/static/style.css"/>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="logo">
+            <i class="fas fa-compact-disc"></i>
+            <span>MoodMate</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Input section -->
+        <section class="hero-section">
+            <h1 class="main-heading">What's your mood today?</h1>
+            <p class="subtitle">Let AI decode your feelings and find your perfect soundtrack.</p>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="btn-camera">
+                    <i class="fas fa-camera"></i> Take Photo
+                </button>
+                <input type="file" id="camera-input" accept="image/*" style="display: none;">
+                <button class="btn btn-outline" id="btn-upload">
+                    <i class="fas fa-image"></i> Upload Image
+                </button>
+                <input type="file" id="upload-input" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="divider">
+                <span>OR SHARE YOUR FEELINGS</span>
+            </div>
+
+            <div class="text-input-wrapper">
+                <input type="text" id="feeling-input"
+                    placeholder="e.g., I'm feeling a bit overwhelmed and need to relax...">
+                <button id="btn-submit-text" class="btn-submit">Submit</button>
+            </div>
+        </section>
+
+        <!-- Results section, flows naturally downwards as part of the page -->
+        <section class="result-section hidden" id="result-section">
+            <div class="mood-prediction">
+                <p> Your current mood: <span class="mood-highlight" id="mood-result">Calm</span></p>
+            </div>
+
+            <div class="recommendations">
+                <h2>These songs are for you:</h2>
+                <div class="song-grid" id="song-grid">
+                    <!-- Song cards will be injected here via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/main.js"></script>
+</body>
+
+</html>
