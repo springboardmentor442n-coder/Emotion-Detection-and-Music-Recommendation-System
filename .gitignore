@@ -1,12 +1,68 @@
-# Python cache
+# ==============================
+# 🔑 Environment & Secrets
+# ==============================
+.env
+.env.*
+
+# ==============================
+# 🤖 ML Models (too large + private)
+# ==============================
+*.keras
+*.h5
+*.pb
+*.tflite
+*.onnx
+models/
+ml/models/
+
+# ==============================
+# 🗄️ Database (contains user data)
+# ==============================
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# ==============================
+# 🗂️ Cache Files
+# ==============================
+youtube_cache.json
 __pycache__/
+*/__pycache__/
+**/__pycache__/
 *.pyc
+*.pyo
 
-# Virtual environment
+# ==============================
+# 📦 Virtual Environment
+# ==============================
 tf_env/
+venv/
+env/
+.venv/
 
-# Dataset
+# ==============================
+# 📊 Dataset
+# ==============================
 ml/data/
+dataset.csv
 
-# System files
+# ==============================
+# 🧪 Temp / Test Files
+# ==============================
+test.jpg
+*.tmp
+
+# ==============================
+# 🖥️ OS & Editor
+# ==============================
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ==============================
+# 📋 Logs
+# ==============================
+*.log
+logs/
