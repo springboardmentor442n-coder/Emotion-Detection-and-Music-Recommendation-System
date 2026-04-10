@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MoodMate</title>
+    <style>
+      :root {
+        --bg: #f6fbf7;
+        --card: #ffffff;
+        --text: #17212b;
+        --muted: #667085;
+        --border: #d0d5dd;
+        --accent: #16a34a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--text);
+        background: linear-gradient(180deg, #edf9f0, var(--bg));
+      }
+      .container { max-width: 1080px; margin: 0 auto; padding: 24px; }
+      .title { text-align: center; margin-bottom: 20px; }
+      .title h1 { margin: 0; font-size: 2.2rem; }
+      .title p { margin: 6px 0 0; color: var(--muted); }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .card h2 { margin: 0 0 12px; font-size: 1.1rem; }
+      .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+      .tab-btn {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      .tab-btn.active { background: #eaf9ef; border-color: #86efac; }
+      .dropzone {
+        border: 2px dashed #98a2b3;
+        border-radius: 10px;
+        padding: 14px;
+        background: #fcfffd;
+        transition: 0.2s;
+      }
+      .dropzone.dragover { border-color: var(--accent); background: #ecfdf3; }
+      .preview { margin-top: 12px; width: 100%; max-height: 240px; object-fit: cover; border-radius: 8px; }
+      textarea, input[type="file"] {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+      }
+      textarea { min-height: 110px; resize: vertical; }
+      .btn {
+        margin-top: 10px;
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .btn.secondary { background: #344054; }
+      .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+      .emotion-badge {
+        display: inline-block;
+        background: #ecfdf3;
+        border: 1px solid #86efac;
+        border-radius: 999px;
+        padding: 5px 10px;
+        margin-bottom: 8px;
+      }
+      .muted { color: var(--muted); }
+      .error { color: #b42318; margin-top: 8px; }
+      .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      @media (max-width: 900px) { .tracks { grid-template-columns: 1fr; } }
+      .track { border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+      .track .meta { color: var(--muted); font-size: 0.9rem; }
+      .track .preview-btn { 
+        margin-top: 8px; 
+        padding: 8px 12px; 
+        font-size: 0.85rem;
+        border: 1px solid var(--accent);
+        background: rgba(22, 163, 74, 0.1);
+        color: var(--accent);
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.2s;
+      }
+      .track .preview-btn:hover { background: var(--accent); color: white; }
+      .history-item { border: 1px solid var(--border); border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+      .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">
+        <h1>MoodMate</h1>
+        <p>Emotion detection from text/image + mood-based playlist suggestions</p>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <h2>Input</h2>
+          <div class="tabs">
+            <button id="imageTab" class="tab-btn active">Image Detection</button>
+            <button id="textTab" class="tab-btn">Text Detection</button>
+          </div>
+
+          <div id="imagePanel">
+            <div id="dropzone" class="dropzone">
+              Drag & drop image here or choose file
+              <input id="fileInput" type="file" accept="image/*" />
+              <img id="preview" class="preview" style="display:none" alt="Preview" />
+            </div>
+            <button id="detectImageBtn" class="btn">Detect Emotion</button>
+          </div>
+
+          <div id="textPanel" style="display:none">
+            <textarea id="textInput" placeholder="Type how you feel..."></textarea>
+            <button id="detectTextBtn" class="btn">Analyze Emotion</button>
+          </div>
+          <p id="error" class="error"></p>
+        </section>
+
+        <section class="card">
+          <h2>Detected Emotion</h2>
+          <div id="emotionResult" class="muted">Run detection to view result.</div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:16px">
+        <div class="row">
+          <h2 style="margin:0">Playlist Recommendations</h2>
+          <button id="refreshBtn" class="btn secondary" disabled>Refresh Playlist</button>
+        </div>
+        <div id="tracks" class="tracks" style="margin-top:10px"></div>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <h2>🔍 Search Songs</h2>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <input id="searchInput" type="text" placeholder="Search by song title or artist..." style="flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 0.95rem;">
+          <button id="searchBtn" class="btn" style="margin-top: 0;">Search</button>
+        </div>
+        <div id="searchResults" class="tracks" style="margin-top:10px"></div>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <h2>History</h2>
+        <div id="history" class="muted">Loading...</div>
+      </section>
+    </div>
+
+    <script>
+      let mode = "image";
+      let selectedFile = null;
+      let latestEmotion = "";
+      const apiBase = "";
+
+      const imageTab = document.getElementById("imageTab");
+      const textTab = document.getElementById("textTab");
+      const imagePanel = document.getElementById("imagePanel");
+      const textPanel = document.getElementById("textPanel");
+      const fileInput = document.getElementById("fileInput");
+      const preview = document.getElementById("preview");
+      const dropzone = document.getElementById("dropzone");
+      const detectImageBtn = document.getElementById("detectImageBtn");
+      const detectTextBtn = document.getElementById("detectTextBtn");
+      const textInput = document.getElementById("textInput");
+      const emotionResult = document.getElementById("emotionResult");
+      const tracks = document.getElementById("tracks");
+      const refreshBtn = document.getElementById("refreshBtn");
+      const searchInput = document.getElementById("searchInput");
+      const searchBtn = document.getElementById("searchBtn");
+      const searchResults = document.getElementById("searchResults");
+      const history = document.getElementById("history");
+      const errorBox = document.getElementById("error");
+
+      function setMode(next) {
+        mode = next;
+        imageTab.classList.toggle("active", next === "image");
+        textTab.classList.toggle("active", next === "text");
+        imagePanel.style.display = next === "image" ? "block" : "none";
+        textPanel.style.display = next === "text" ? "block" : "none";
+        errorBox.textContent = "";
+      }
+
+      function setImage(file) {
+        selectedFile = file;
+        if (!file) {
+          preview.style.display = "none";
+          preview.src = "";
+          return;
+        }
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      }
+
+      async function readJson(res) {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || "Request failed");
+        return data;
+      }
+
+      function renderResult(data) {
+        latestEmotion = data.emotion || "";
+        refreshBtn.disabled = !latestEmotion;
+        emotionResult.innerHTML = `
+          <div class="emotion-badge">${data.emotion || "neutral"}</div>
+          <div><strong>Confidence:</strong> ${((data.confidence || 0) * 100).toFixed(1)}%</div>
+          <div class="muted" style="margin-top:6px">${data.analysis || ""}</div>
+          <div class="muted" style="margin-top:6px">Provider: ${data.provider || "unknown"}</div>
+        `;
+        renderTracks(data.recommendations || []);
+      }
+
+      function renderTracks(list) {
+        if (!list.length) {
+          tracks.innerHTML = `<div class="muted">No tracks yet.</div>`;
+          return;
+        }
+        tracks.innerHTML = list.map((t, i) => `
+          <div class="track">
+            <div><strong>${t.title}</strong></div>
+            <div class="meta">${t.artist}</div>
+            <div class="meta">${t.genre} • Score: ${(t.score || 0).toFixed(3)}</div>
+            <button style="margin-top: 8px; padding: 8px 12px; background: #16a34a; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;" onclick="playRealMusic('${t.title.replace(/'/g, "\\'")}', '${t.artist.replace(/'/g, "\\'")}', '${(t.preview_url || '').replace(/'/g, "\\'")}')" title="Open in music player">
+              ▶ Play Music
+            </button>
+          </div>
+        `).join("");
+      }
+      
+      function playRealMusic(title, artist, previewUrl) {
+        if (!previewUrl) {
+          alert(`No music link available for "${title}" by ${artist}.\n\nTry searching manually on YouTube Music or Spotify.`);
+          return;
+        }
+        
+        // If it's a YouTube Music search URL, open in new tab
+        if (previewUrl.includes('youtube')) {
+          window.open(previewUrl, '_blank', 'width=1000,height=700');
+        } 
+        // If it's a Last.fm URL
+        else if (previewUrl.includes('last.fm')) {
+          window.open(previewUrl, '_blank', 'width=1000,height=700');
+        }
+        // Otherwise try to open directly
+        else {
+          window.open(previewUrl, '_blank');
+        }
+        
+        console.log(`Opening music for ${title} by ${artist}: ${previewUrl}`);
+      }
+
+      async function loadHistory() {
+        try {
+          const res = await fetch(`${apiBase}/api/history?limit=8`);
+          const data = await readJson(res);
+          if (!data.mongo_enabled) {
+            history.textContent = "MongoDB not enabled. Set MONGODB_URI in moodmate/backend/.env";
+            return;
+          }
+          const sessions = data.sessions || [];
+          if (!sessions.length) {
+            history.textContent = "No history yet.";
+            return;
+          }
+          history.innerHTML = sessions.map((s) => `
+            <div class="history-item">
+              <div class="row">
+                <strong>${s.emotion || "n/a"}</strong>
+                <span class="muted">${s.input_mode || "unknown"}</span>
+              </div>
+              <div class="muted">${s.confidence ? (s.confidence * 100).toFixed(1) + "% confidence" : "no confidence"}</div>
+              <div class="muted">${new Date(s.created_at).toLocaleString()}</div>
+            </div>
+          `).join("");
+        } catch (e) {
+          history.textContent = "Could not load history.";
+        }
+      }
+
+      imageTab.addEventListener("click", () => setMode("image"));
+      textTab.addEventListener("click", () => setMode("text"));
+      fileInput.addEventListener("change", (e) => setImage(e.target.files[0] || null));
+
+      dropzone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+      dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+      dropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("dragover");
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith("image/")) setImage(file);
+      });
+
+      detectTextBtn.addEventListener("click", async () => {
+        errorBox.textContent = "";
+        if (!textInput.value.trim()) return;
+        detectTextBtn.disabled = true;
+        detectTextBtn.textContent = "Analyzing...";
+        try {
+          const res = await fetch(`${apiBase}/api/detect-emotion-text`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: textInput.value, top_k: 10 }),
+          });
+          const data = await readJson(res);
+          renderResult(data);
+          await loadHistory();
+        } catch (e) {
+          errorBox.textContent = e.message || "Text analysis failed";
+        } finally {
+          detectTextBtn.disabled = false;
+          detectTextBtn.textContent = "Analyze Emotion";
+        }
+      });
+
+      detectImageBtn.addEventListener("click", async () => {
+        errorBox.textContent = "";
+        if (!selectedFile) return;
+        detectImageBtn.disabled = true;
+        detectImageBtn.textContent = "Detecting...";
+        try {
+          const form = new FormData();
+          form.append("file", selectedFile);
+          form.append("top_k", "10");
+          const res = await fetch(`${apiBase}/api/detect-emotion-image`, { method: "POST", body: form });
+          const data = await readJson(res);
+          renderResult(data);
+          await loadHistory();
+        } catch (e) {
+          errorBox.textContent = e.message || "Image analysis failed";
+        } finally {
+          detectImageBtn.disabled = false;
+          detectImageBtn.textContent = "Detect Emotion";
+        }
+      });
+
+      refreshBtn.addEventListener("click", async () => {
+        if (!latestEmotion) return;
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = "Refreshing...";
+        try {
+          const res = await fetch(`${apiBase}/api/recommend-music`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ emotion: latestEmotion, top_k: 10 }),
+          });
+          const data = await readJson(res);
+          renderTracks(data.recommendations || []);
+          await loadHistory();
+        } catch (e) {
+          errorBox.textContent = e.message || "Could not refresh playlist";
+        } finally {
+          refreshBtn.disabled = false;
+          refreshBtn.textContent = "Refresh Playlist";
+        }
+      });
+
+      searchBtn.addEventListener("click", async () => {
+        const query = searchInput.value.trim();
+        if (!query) {
+          searchResults.innerHTML = `<div class="muted">Please enter a song title or artist name.</div>`;
+          return;
+        }
+        
+        searchBtn.disabled = true;
+        searchBtn.textContent = "Searching...";
+        try {
+          const res = await fetch(`${apiBase}/api/search?q=${encodeURIComponent(query)}&limit=10`);
+          const data = await readJson(res);
+          
+          if (!data.results || data.results.length === 0) {
+            searchResults.innerHTML = `<div class="muted">No songs found for "${query}". Try different keywords!</div>`;
+          } else {
+            renderSearch(data.results);
+          }
+        } catch (e) {
+          searchResults.innerHTML = `<div class="error">Search failed: ${e.message}</div>`;
+        } finally {
+          searchBtn.disabled = false;
+          searchBtn.textContent = "Search";
+        }
+      });
+
+      // Allow search on Enter key
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          searchBtn.click();
+        }
+      });
+
+      function renderSearch(results) {
+        if (!results.length) {
+          searchResults.innerHTML = `<div class="muted">No results found.</div>`;
+          return;
+        }
+        searchResults.innerHTML = results.map((t) => `
+          <div class="track">
+            <div><strong>${t.title}</strong></div>
+            <div class="meta">${t.artist}</div>
+            <div class="meta">${t.genre}</div>
+            <button style="margin-top: 8px; padding: 8px 12px; background: #16a34a; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;" onclick="playRealMusic('${t.title.replace(/'/g, "\\'")}', '${t.artist.replace(/'/g, "\\'")}', '${(t.preview_url || '').replace(/'/g, "\\'")}')" title="Open in music player">
+              ▶ Play Music
+            </button>
+          </div>
+        `).join("");
+      }
+
+      loadHistory();
+    </script>
+  </body>
+  </html>
