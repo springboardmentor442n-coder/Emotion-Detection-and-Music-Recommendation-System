@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pandas
+scikit-learn
+python-multipart
+pydantic
+openai
+pymongo
+requests
+python-dotenv
+transformers
+torch
+deepface
+pillow
+opencv-python
+numpy

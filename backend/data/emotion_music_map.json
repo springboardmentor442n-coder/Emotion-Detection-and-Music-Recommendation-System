@@ -1,0 +1,8 @@
+{
+  "joy": ["pop", "dance", "upbeat", "party", "happy"],
+  "sadness": ["acoustic", "piano", "soft", "melancholic", "calm"],
+  "anger": ["rock", "metal", "intense", "energetic"],
+  "fear": ["ambient", "instrumental", "calm", "focus"],
+  "surprise": ["electronic", "experimental", "indie"],
+  "neutral": ["lofi", "chill", "instrumental", "focus"]
+}
