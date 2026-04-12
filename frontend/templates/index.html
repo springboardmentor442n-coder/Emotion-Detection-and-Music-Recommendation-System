@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMate - Emotion Detection & Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-brand">
+                <i class="fas fa-heart-pulse"></i>
+                <span class="brand-name">MoodMate</span>
+            </div>
+            <p class="tagline">Detect Your Mood, Discover Your Vibe</p>
+        </div>
+    </header>
+
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="gradient-blob blob-1"></div>
+        <div class="gradient-blob blob-2"></div>
+        <div class="gradient-blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="title-main">What's Your Mood Today? 🎵</h1>
+            <p class="description">Tell us how you feel and we'll find the perfect songs to match your emotions</p>
+            
+            <!-- Tabs for Camera/Upload/Text -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="photo">📸 Photo</button>
+                <button class="tab-btn" data-tab="upload">🖼️ Upload</button>
+                <button class="tab-btn" data-tab="text">💬 Text</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Camera Tab -->
+                <div class="tab-pane active" id="photo">
+                    <div class="action-card">
+                        <div class="icon-large">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Take a Selfie</h3>
+                        <p>Let our AI read your facial expression</p>
+                        <button class="btn btn-gradient" id="btn-camera">
+                            <i class="fas fa-video"></i> Open Camera
+                        </button>
+                        <input type="file" id="camera-input" accept="image/*" style="display: none;" capture="user">
+                    </div>
+                </div>
+
+                <!-- Upload Tab -->
+                <div class="tab-pane" id="upload">
+                    <div class="action-card">
+                        <div class="icon-large">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3>Upload a Photo</h3>
+                        <p>Choose an image from your device</p>
+                        <button class="btn btn-gradient" id="btn-upload">
+                            <i class="fas fa-cloud-arrow-up"></i> Select Image
+                        </button>
+                        <input type="file" id="upload-input" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- Text Tab -->
+                <div class="tab-pane" id="text">
+                    <div class="action-card text-input-card">
+                        <div class="icon-large">
+                            <i class="fas fa-pen-to-square"></i>
+                        </div>
+                        <h3>Tell Us Your Feeling</h3>
+                        <p>Describe your mood in words</p>
+                        <div class="text-input-group">
+                            <input type="text" id="feeling-input" placeholder="e.g., I'm happy and energetic today...">
+                            <button id="btn-submit-text" class="btn btn-gradient">
+                                <i class="fas fa-paper-plane"></i> Analyze
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loading-spinner hidden" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing your mood...</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section hidden" id="result-section">
+            <!-- Emotion Detection Card -->
+            <div class="emotion-card">
+                <h2>Your Emotion</h2>
+                <div class="emotion-display">
+                    <div class="emotion-emoji" id="emotion-emoji">😊</div>
+                    <div class="emotion-info">
+                        <p class="emotion-label">You're feeling:</p>
+                        <h3 class="emotion-name" id="mood-result">Happy</h3>
+                        <p class="emotion-confidence">
+                            <span class="confidence-bar">
+                                <span class="confidence-fill" id="confidence-fill"></span>
+                            </span>
+                            <span class="confidence-text" id="confidence-text">85%</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- All Emotions Breakdown -->
+                <div class="emotions-breakdown">
+                    <h4>Emotion Breakdown</h4>
+                    <div class="emotion-bars" id="emotion-bars">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="recommendations-section">
+                <h2>🎵 Recommended Songs</h2>
+                <div class="song-grid" id="song-grid">
+                    <!-- Song cards injected here -->
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="action-footer">
+                <button class="btn btn-secondary" onclick="resetUI()">
+                    <i class="fas fa-rotate-left"></i> Try Again
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/main.js"></script>
+</body>
+</html>
