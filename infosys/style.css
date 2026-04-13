@@ -1,0 +1,204 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #2b1055, #7597de);
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Title (UNCHANGED as you said 👍) */
+.page-title {
+    position: absolute;
+    top: 15px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* 🔥 MAIN CONTAINER (WIDER) */
+.container {
+    display: flex;
+    gap: 25px;
+
+    width: 95%;          /* increased */
+    max-width: 1500px;   /* increased */
+    height: 82vh;
+}
+
+/* 🔥 LEFT PANEL (SMALLER) */
+.left {
+    background: rgba(255,255,255,0.07);
+    padding: 20px;
+    border-radius: 15px;
+    width: 30%;   /* reduced */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 🔥 RIGHT PANEL (MAIN BIG AREA) */
+.right {
+    background: rgba(255,255,255,0.07);
+    padding: 25px;
+    border-radius: 15px;
+    width: 70%;   /* increased */
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Buttons */
+.top-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.top-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #222;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.top-buttons button:hover {
+    background: #444;
+}
+
+.top-buttons button.active {
+    background: white;
+    color: black;
+}
+
+/* Input Area */
+.input-area {
+    margin-top: 10px;
+}
+
+/* Text input */
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #111;
+    color: white;
+}
+
+/* Image preview */
+.preview {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    object-fit: cover;
+    display: none;
+    margin-top: 10px;
+}
+
+/* Button */
+.analyze-btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #ff00cc, #3333ff);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.analyze-btn:hover {
+    transform: scale(1.03);
+}
+
+/* RESULT BOX */
+.result-box {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    padding: 18px;   /* slightly bigger */
+    border-radius: 12px;
+    text-align: center;
+}
+
+.result-box h1 {
+    font-size: 34px;   /* bigger text */
+    margin: 5px 0;
+}
+
+/* SONG TITLE */
+.songs-title {
+    margin: 15px 0 10px;
+}
+
+/* 🔥 SONG GRID (BETTER USE OF SPACE) */
+#songs {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 12px;
+}
+
+/* 🔥 SONG CARD (BIGGER) */
+.song {
+    display: flex;
+    flex-direction: column;
+    background: #111;
+    padding: 15px;   /* increased */
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.song:hover {
+    transform: scale(1.03);
+    background: #1c1c1c;
+}
+
+.song-title {
+    font-size: 18px;   /* bigger */
+    font-weight: bold;
+}
+
+.song-artist {
+    font-size: 14px;
+    color: gray;
+}
+
+/* AUDIO PLAYER */
+audio {
+    margin-top: 8px;
+    width: 100%;
+    height: 32px;
+}
+
+/* Emotion Backgrounds */
+body.happy {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+body.sad {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+body.angry {
+    background: linear-gradient(135deg, #cb2d3e, #ef473a);
+}
+
+body.neutral {
+    background: linear-gradient(135deg, #232526, #414345);
+}

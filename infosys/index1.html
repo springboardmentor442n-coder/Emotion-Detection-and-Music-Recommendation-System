@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emotion Music</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="navbar">
+    <h1 class="main-title">Emotion Detection & Music Recommendation System 🎧</h1>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="wrapper">
+
+    <div class="container">
+
+        <!-- LEFT PANEL -->
+        <div class="left">
+
+            <h3 class="section-title">Input</h3>
+
+            <div class="top-buttons">
+                <button id="textBtn" class="active">Text</button>
+                <button id="uploadBtn">Upload</button>
+            </div>
+
+            <div id="inputArea" class="input-area">
+                <input type="text" id="textInput" placeholder="What are you feeling today?">
+            </div>
+
+            <button class="analyze-btn" onclick="predictEmotion()">Analyze</button>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right">
+
+            <div class="result-box">
+                <p class="label">CURRENT MOOD</p>
+                <h1 id="emotion">-</h1>
+                <p id="confidence">0% Match</p>
+            </div>
+
+            <h3 class="songs-title">Recommended for you</h3>
+
+            <div id="songs" class="songs-grid">
+                <div class="song">
+                    <h4>Song Name</h4>
+                    <p>Artist Name</p>
+                    <audio controls></audio>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+infosys/venv/
+venv/
+__pycache__/
+*.pyc
+.vscode/
+.env
+*.h5
+dataset/
